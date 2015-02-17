@@ -963,7 +963,7 @@ public class DbDefinitionsServiceImpl implements DefinitionsService {
         if (ds == null) {
             throw new Exception("DataSource is null");
         }
-        Map<String, String> payload = null;
+        Set<String> payload = null;
         Connection c = null;
         try {
             c = ds.getConnection();
@@ -974,7 +974,7 @@ public class DbDefinitionsServiceImpl implements DefinitionsService {
             log.debugf("SQL: " + sql);
             ResultSet rs = s.executeQuery(sql.toString());
             if (rs.next()) {
-                payload = fromJson(rs.getString(2), Map.class);
+                payload = fromJson(rs.getString(2), Set.class);
             }
             s.close();
         } catch (SQLException e) {
@@ -987,7 +987,7 @@ public class DbDefinitionsServiceImpl implements DefinitionsService {
                 }
             } catch (Exception ignored) { }
         }
-        return payload != null && !payload.isEmpty() ? new HashSet(payload.values()) : null;
+        return payload != null && !payload.isEmpty() ? new HashSet(payload) : null;
     }
 
     @Override
